@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>DALI STUDY｜學生走失協助 Lost Child Assistance</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+
+  :root{
+    --navy: #16213E;
+    --navy-deep: #0E1730;
+    --paper: #F7F5F0;
+    --gold: #C9963C;
+    --alert: #B5392C;
+    --alert-deep: #8F2C22;
+    --green: #2E8B57;
+    --ink: #1C1C1C;
+    --ink-soft: #5A5A5A;
+    --line: #DDD8CC;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Noto Sans TC', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+  .wrap{max-width:520px;margin:0 auto;padding-bottom:48px;}
+
+  header{
+    background:var(--navy);
+    background-image:radial-gradient(circle at 15% 20%, rgba(201,150,60,0.18), transparent 55%);
+    color:#fff;
+    padding:28px 24px 22px;
+    border-bottom:4px solid var(--gold);
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Noto Serif TC', serif; font-weight:700;
+    letter-spacing:0.06em;
+    font-size:15px;
+    color:var(--gold);
+    text-transform:uppercase;
+  }
+  .brand-zh{color:#fff; font-weight:500; font-size:13px; letter-spacing:0.02em;}
+  h1{
+    font-family:'Noto Serif TC', serif;
+    font-size:26px;
+    font-weight:700;
+    margin:14px 0 2px;
+    line-height:1.35;
+  }
+  h1 .en{
+    display:block;
+    font-family:'Noto Sans TC', sans-serif;
+    font-size:14px;
+    font-weight:400;
+    color:#C9C9D6;
+    margin-top:4px;
+    letter-spacing:0.02em;
+  }
+
+  .intro{
+    background:var(--navy-deep);
+    color:#EDEBE3;
+    padding:18px 24px 24px;
+    font-size:14.5px;
+  }
+  .intro p{margin:0 0 10px;}
+  .intro .en{color:#B7BAC8; font-size:13px;}
+
+  section{padding:22px 24px;border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:'Noto Serif TC', serif;
+    font-weight:700;
+    font-size:16px;
+    color:var(--navy);
+    margin:0 0 4px;
+  }
+  .eyebrow .en{
+    display:block;
+    font-family:'Noto Sans TC', sans-serif;
+    font-weight:500;
+    font-size:11.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:2px;
+  }
+
+  .info-grid{margin-top:14px; display:grid; gap:14px;}
+  .info-row{display:grid; grid-template-columns:88px 1fr; gap:12px; align-items:start;}
+  .info-label{font-size:12.5px; color:var(--ink-soft); font-weight:500; padding-top:1px;}
+  .info-value{font-size:14.5px; font-weight:500;}
+  .info-value .sub{display:block; font-size:12.5px; color:var(--ink-soft); font-weight:400; margin-top:1px;}
+
+  /* CURRENT ITINERARY */
+  .now-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px;
+    margin-top:14px;
+  }
+  .now-time{
+    font-size:12px; color:var(--ink-soft); margin-bottom:10px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .now-time .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
+  .seg{
+    display:grid; grid-template-columns:64px 1fr; gap:10px;
+    padding:9px 0;
+    border-top:1px solid #EFEBE1;
+    font-size:13.5px;
+  }
+  .seg:first-of-type{border-top:none;}
+  .seg-label{color:var(--ink-soft); font-size:12px; padding-top:2px;}
+  .seg.active{
+    background:#FBF3E4;
+    margin:0 -12px;
+    padding:9px 12px;
+    border-radius:6px;
+    border-top:none;
+  }
+  .seg.active .seg-label{color:var(--gold); font-weight:700;}
+  .seg.active .seg-text{font-weight:700; color:var(--navy);}
+  .no-match{font-size:13.5px; color:var(--ink-soft); font-style:italic;}
+  .refresh-note{font-size:11px; color:var(--ink-soft); margin-top:10px;}
+
+  .contacts{background:#FBF9F4;}
+  .contact-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:4px solid var(--gold);
+    border-radius:6px;
+    padding:14px 16px;
+    margin-top:12px;
+  }
+  .contact-card.priority{border-left-color:var(--green);}
+  .contact-role{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-soft); font-weight:500; margin-bottom:2px;}
+  .badge{
+    font-size:10.5px; font-weight:700; color:#fff; background:var(--green);
+    padding:2px 7px; border-radius:10px; letter-spacing:0.03em;
+  }
+  .contact-name{font-size:15px; font-weight:700; color:var(--navy); margin:2px 0 8px;}
+  .contact-note{font-size:12px; color:var(--ink-soft); margin-top:8px; line-height:1.5;}
+  .btn-row{display:grid; gap:8px;}
+  .call-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--alert);
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.02em;
+    padding:12px 14px;
+    border-radius:6px;
+  }
+  .call-btn:active{background:var(--alert-deep);}
+  .wa-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:#25D366;
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14.5px;
+    padding:11px 14px;
+    border-radius:6px;
+  }
+  .email-line{
+    margin-top:14px; text-align:center; font-size:13px;
+  }
+  .email-line a{color:var(--navy); font-weight:600; text-decoration:none; border-bottom:1px solid var(--gold);}
+
+  .steps{background:var(--navy); color:#fff;}
+  .steps .eyebrow{color:#fff;}
+  .steps .eyebrow .en{color:var(--gold);}
+  ol.step-list{list-style:none; margin:16px 0 0; padding:0; counter-reset:step;}
+  ol.step-list li{
+    counter-increment:step;
+    display:grid; grid-template-columns:30px 1fr; gap:10px;
+    margin-bottom:14px;
+    font-size:14px;
+  }
+  ol.step-list li::before{
+    content:counter(step);
+    background:var(--gold);
+    color:var(--navy-deep);
+    font-weight:800;
+    width:26px; height:26px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px;
+  }
+  ol.step-list .en{display:block; color:#B7BAC8; font-size:12.5px; margin-top:2px;}
+
+  .id-block{background:#fff;}
+  .id-note{font-size:13px; color:var(--ink-soft); margin-top:10px;}
+  .tag{
+    display:inline-block;
+    margin-top:12px;
+    background:var(--navy);
+    color:var(--gold);
+    font-family:'Noto Serif TC', serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.08em;
+    padding:8px 14px;
+    border-radius:4px;
+  }
+  .tag .en{display:block; font-family:'Noto Sans TC',sans-serif; font-weight:400; color:#EDEBE3; font-size:11px; letter-spacing:0.03em; margin-top:2px;}
+
+  footer{
+    padding:18px 24px 4px;
+    text-align:center;
+    font-size:11.5px;
+    color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">DALI STUDY <span style="color:#C9C9D6; font-weight:400;">·</span> <span class="brand-zh">大理國際遊留學</span></div>
+    <h1>學生走失協助
+      <span class="en">Lost Child Assistance</span>
+    </h1>
+  </header>
+
+  <div class="intro">
+    <p>若您發現持有此名牌的學生與團體走散，請協助學生留在安全、明亮且有人員管理的場所，並立即聯絡我們。</p>
+    <p class="en">If you find this student separated from their group, please help them stay in a safe, well-lit place with staff nearby, and contact us immediately.</p>
+  </div>
+
+  <section>
+    <div class="eyebrow"><span class="en">Program Information</span>活動資訊</div>
+    <div class="info-grid">
+      <div class="info-row">
+        <div class="info-label">活動名稱<br>Program</div>
+        <div class="info-value">2026 墨爾本國際教育旅行
+          <span class="sub">2026 Melbourne Educational Tour</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">活動期間<br>Dates</div>
+        <div class="info-value">2026年7月13日 – 7月25日
+          <span class="sub">Jul 13 – Jul 25, 2026</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">住宿地點<br>Staying at</div>
+        <div class="info-value">11 Prospect Street, Box Hill, VIC 3128
+          <span class="sub">Hotel/apartment-style, managed by group leaders</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">團體人數<br>Group size</div>
+        <div class="info-value">共 11 人：8 位學生、3 位成人帶隊人員
+          <span class="sub">11 total: 8 students, 3 adult leaders</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">主辦單位<br>Organizer</div>
+        <div class="info-value">大理國際遊留學
+          <span class="sub">DALI STUDY</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span class="en">Current Itinerary</span>目前行程</div>
+    <div class="now-card" id="itinerary-card">
+      <div class="now-time" id="now-time"><span class="dot"></span><span id="now-time-text">讀取中… Loading…</span></div>
+      <div id="itinerary-body">
+        <div class="no-match">讀取中… Loading…</div>
+      </div>
+    </div>
+    <div class="refresh-note">依墨爾本當地時間自動判斷，僅供大致參考 · Based on Melbourne local time, for general reference only</div>
+  </section>
+
+  <section class="contacts">
+    <div class="eyebrow"><span class="en">Emergency Contacts</span>緊急聯絡</div>
+
+    <div class="contact-card priority">
+      <div class="contact-role">澳洲當地辦公室 · Melbourne Office <span class="badge">本地號碼</span></div>
+      <div class="contact-name">大理國際遊留學 墨爾本辦公室<br><span style="font-weight:400; font-size:12.5px; color:var(--ink-soft);">G/273 Camberwell Road, VIC 3124</span></div>
+      <div class="btn-row">
+        <a class="call-btn" href="tel:+61412065350">📞 撥打 +61 412 065 350</a>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-role">Carol <span class="badge">WhatsApp</span></div>
+      <div class="contact-name">+886 938 583 158</div>
+      <div class="btn-row">
+        <a class="call-btn" href="tel:+886938583158">📞 國際電話撥打</a>
+        <a class="wa-btn" href="https://wa.me/886938583158" target="_blank" rel="noopener">💬 使用 WhatsApp 聯繫</a>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-role">Wendy · 主辦聯絡人 Program Contact</div>
+      <div class="contact-name">+886 966 795 658</div>
+      <div class="btn-row">
+        <a class="call-btn" href="tel:+886966795658">📞 國際電話撥打</a>
+      </div>
+      <div class="contact-note">台灣號碼，無澳洲當地電話，建議優先使用 WhatsApp 或國際電話聯繫。多數學生手機中已存有此聯絡方式，可請學生協助撥打。<br>
+      <span style="color:var(--ink-soft);">Taiwan-based number, no Australian line — please use WhatsApp or international dialing. Most students already have this contact saved and can help place the call themselves.</span></div>
+    </div>
+
+    <div class="email-line">
+      Email：<a href="mailto:tsunax06@gmail.com">tsunax06@gmail.com</a>
+    </div>
+  </section>
+
+  <section class="steps">
+    <div class="eyebrow"><span class="en">Please Help</span>請協助我們</div>
+    <ol class="step-list">
+      <li>請不要讓學生獨自離開。
+        <span class="en">Please do not allow the student to leave alone.</span>
+      </li>
+      <li>請協助學生留在原地，或前往服務台、商店等有人員在場的安全場所。
+        <span class="en">Keep the student at a customer service desk, shop, or another staffed, safe location.</span>
+      </li>
+      <li>請優先撥打上方「澳洲當地辦公室」或 Carol 的號碼（可使用 WhatsApp）。
+        <span class="en">Please call the Melbourne office or Carol first — WhatsApp is available.</span>
+      </li>
+      <li>若無法聯繫，可請學生使用自己的手機聯繫 Wendy，多數學生手機中已存有此聯絡方式。
+        <span class="en">If unreachable, help the student use their own phone to contact Wendy — most students already have her saved as a contact.</span>
+      </li>
+    </ol>
+  </section>
+
+  <section class="id-block">
+    <div class="eyebrow"><span class="en">Student Information</span>學生資訊</div>
+    <p class="id-note">學生姓名可印在名牌正面，網站內不需完整顯示。此頁面用於快速確認團體身分：</p>
+    <span class="tag">DALI STUDY
+      <span class="en">2026 Melbourne Educational Tour</span>
+    </span>
+  </section>
+
+  <footer>
+    此頁面僅用於緊急協助用途 · For emergency assistance purposes only
+  </footer>
+
+</div>
+
+<script>
+  const itinerary = [
+    {date:'2026-07-13', label:'Day 1', morning:'行前準備 Preparation', afternoon:'集合及機場報到 Airport check-in', evening:'23:55 自桃園機場出發（華航CI53），夜宿機上 Overnight flight from Taipei'},
+    {date:'2026-07-14', label:'Day 2', morning:'航程中／布里斯本轉機 In transit via Brisbane', afternoon:'搭乘 QF625 前往墨爾本，約15:50抵達 Arrive Melbourne ~15:50', evening:'機場接送、入住 Box Hill、休息 Check-in & rest'},
+    {date:'2026-07-15', label:'Day 3', morning:'Flinders Street Station、市區交通探索', afternoon:'Federation Square、ACMI 澳洲動態影像中心', evening:'學習紀錄及活動整理 · Box Hill'},
+    {date:'2026-07-16', label:'Day 4', morning:'Queen Victoria Market 維多利亞女王市場', afternoon:'State Library of Victoria 州立圖書館', evening:'學習紀錄及活動整理 · Box Hill'},
+    {date:'2026-07-17', label:'Day 5', morning:'University of Melbourne 墨爾本大學', afternoon:'Lygon Street 小義大利、Melbourne Zoo 動物園', evening:'學習紀錄及活動整理 · Box Hill'},
+    {date:'2026-07-18', label:'Day 6', morning:'Scienceworks 科學博物館', afternoon:'Williamstown 海港地區探索', evening:'學習紀錄及活動整理 · Box Hill'},
+    {date:'2026-07-19', label:'Day 7', morning:'墨爾本市區探索', afternoon:'拍攝素材及學習成果整理', evening:'團體交流及內容檢視 · Box Hill'},
+    {date:'2026-07-20', label:'Day 8', morning:'Hosier Lane 塗鴉街及城市藝術探索', afternoon:'NGV 維多利亞國家美術館', evening:'學習紀錄及活動整理 · Box Hill'},
+    {date:'2026-07-21', label:'Day 9', morning:'Hospitality 餐旅產業及職涯探索', afternoon:'餐旅實務體驗活動', evening:'學習紀錄及活動整理 · Box Hill'},
+    {date:'2026-07-22', label:'Day 10', morning:'RMIT University 皇家墨爾本理工大學', afternoon:'Melbourne Museum 墨爾本博物館', evening:'學習紀錄及活動整理 · Box Hill'},
+    {date:'2026-07-23', label:'Day 11', morning:'木工實務探索', afternoon:'建築工程及職涯體驗', evening:'成果整理及返程準備 · Box Hill'},
+    {date:'2026-07-24', label:'Day 12', morning:'學習成果整理及發表準備', afternoon:'成果分享、行李整理及前往機場', evening:'21:50 自墨爾本機場搭機返台，夜宿機上 Depart Melbourne 21:50'},
+    {date:'2026-07-25', label:'Day 13', morning:'約05:15抵達桃園國際機場 Arrive Taipei ~05:15', afternoon:'解散返家 Dismissal', evening:'—'}
+  ];
+
+  function melbourneParts(){
+    const fmt = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Australia/Melbourne',
+      year:'numeric', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', hour12:false, weekday:'short'
+    });
+    const parts = fmt.formatToParts(new Date());
+    const map = {};
+    parts.forEach(p => map[p.type] = p.value);
+    return {
+      dateStr: `${map.year}-${map.month}-${map.day}`,
+      hour: parseInt(map.hour, 10),
+      minute: map.minute,
+      weekday: map.weekday
+    };
+  }
+
+  function render(){
+    const now = melbourneParts();
+    document.getElementById('now-time-text').textContent =
+      `墨爾本現在時間 ${now.dateStr}（${now.weekday}）${String(now.hour).padStart(2,'0')}:${now.minute}`;
+
+    const day = itinerary.find(d => d.date === now.dateStr);
+    const body = document.getElementById('itinerary-body');
+
+    if(!day){
+      body.innerHTML = `<div class="no-match">目前不在行程日期範圍內（2026/7/13–7/25）<br><span style="font-size:12px;">Currently outside the trip dates</span></div>`;
+      return;
+    }
+
+    const segment = now.hour < 12 ? 'morning' : (now.hour < 18 ? 'afternoon' : 'evening');
+    const rows = [
+      {key:'morning', label:'上午 AM', text: day.morning},
+      {key:'afternoon', label:'下午 PM', text: day.afternoon},
+      {key:'evening', label:'晚上 PM+', text: day.evening}
+    ];
+
+    body.innerHTML = rows.map(r => `
+      <div class="seg ${r.key === segment ? 'active' : ''}">
+        <div class="seg-label">${r.label}</div>
+        <div class="seg-text">${r.text}</div>
+      </div>
+    `).join('');
+  }
+
+  render();
+  setInterval(render, 60000);
+</script>
+
+</body>
+</html>
