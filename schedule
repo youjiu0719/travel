@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>墨爾本國際學生交流團・行程手冊</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+  :root{
+    --bg: #EDF1EE;
+    --bg-alt: #E3E9E4;
+    --surface: #FFFFFF;
+    --ink: #1D2A28;
+    --ink-muted: #5C6C67;
+    --line: #C9D2CC;
+    --gold: #C08F35;
+    --gold-soft: #F3E4C4;
+    --teal: #2C6B5A;
+    --teal-soft: #DCEAE4;
+    --brick: #AE4A30;
+    --brick-soft: #F4DED5;
+    --font-display: 'Noto Serif TC', serif;
+    --font-body: 'Noto Sans TC', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Header ---------- */
+  header.hero{
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(192,143,53,0.18), transparent 55%),
+      linear-gradient(180deg, #1D2A28 0%, #223834 100%);
+    color: #F3F1EA;
+    padding: 36px 20px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 46px);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    opacity: 0.9;
+    margin-bottom: 10px;
+  }
+  h1{
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(26px, 6vw, 38px);
+    margin: 0 0 6px;
+    letter-spacing: 0.01em;
+  }
+  .hero-sub{
+    color: #C9D6CE;
+    font-size: 14.5px;
+    margin: 0 0 22px;
+  }
+
+  .status-board{
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    backdrop-filter: blur(2px);
+  }
+  .status-dot{
+    width: 10px; height:10px; border-radius:50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 4px rgba(192,143,53,0.22);
+    flex-shrink:0;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ box-shadow: 0 0 0 4px rgba(192,143,53,0.22); }
+    50%{ box-shadow: 0 0 0 8px rgba(192,143,53,0.08); }
+  }
+  .status-text b{ color: #FBEFD2; font-weight:700; }
+  .status-text{ font-size: 13.5px; color:#E7E2D2; }
+
+  /* ---------- Route strip (signature nav) ---------- */
+  nav.route-wrap{
+    position: sticky; top:0; z-index: 10;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 12px 10px;
+  }
+  .route-scroll{
+    display:flex;
+    overflow-x:auto;
+    scrollbar-width: none;
+    padding: 6px 8px 14px;
+    position: relative;
+  }
+  .route-scroll::-webkit-scrollbar{ display:none; }
+  .route-line{
+    position:absolute;
+    left: 28px; right: 28px; top: 33px;
+    height: 3px;
+    background: repeating-linear-gradient(90deg, var(--line) 0 10px, transparent 10px 16px);
+    z-index: 0;
+  }
+  .stop{
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto;
+    width: 76px;
+    display:flex; flex-direction:column; align-items:center;
+    gap:8px;
+    background:none; border:none; cursor:pointer;
+    font-family: var(--font-body);
+    padding: 4px 2px;
+  }
+  .stop-dot{
+    width: 15px; height:15px; border-radius:50%;
+    background: var(--surface);
+    border: 3px solid var(--line);
+    transition: all .2s ease;
+  }
+  .stop-day{ font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
+  .stop-date{ font-size: 12.5px; font-weight:500; color: var(--ink); }
+  .stop.active .stop-dot{ background: var(--teal); border-color: var(--teal); transform: scale(1.15); }
+  .stop.active .stop-day, .stop.active .stop-date{ color: var(--teal); font-weight:700; }
+  .stop.today .stop-dot{
+    background: var(--gold); border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(192,143,53,0.25);
+  }
+  .stop.today::before{
+    content: "現在";
+    position:absolute; top:-14px;
+    font-family: var(--font-mono);
+    font-size: 9.5px; color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  /* ---------- Main content ---------- */
+  main{ max-width: 720px; margin: 0 auto; padding: 22px 16px 60px; }
+
+  .day-card{
+    background: var(--surface);
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(29,42,40,0.04);
+  }
+  .day-card-head{
+    padding: 20px 22px 16px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .day-card-head .weekday-tag{
+    display:inline-block;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--teal);
+    background: var(--teal-soft);
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+  }
+  .day-card-head h2{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0 0 4px;
+  }
+  .day-card-head .place{
+    color: var(--ink-muted);
+    font-size: 13.5px;
+  }
+
+  .segments{ padding: 6px 22px 22px; }
+  .segment{
+    display:flex; gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid #F0F2EF;
+  }
+  .segment:last-child{ border-bottom:none; }
+  .segment-label{
+    flex: 0 0 62px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-muted);
+    padding-top: 2px;
+  }
+  .segment-label .icon{ display:block; font-size: 17px; margin-bottom:4px; }
+  .segment-body{ flex:1; font-size: 15px; color: var(--ink); }
+  .segment.am .segment-label{ color: var(--gold); }
+  .segment.pm .segment-label{ color: var(--teal); }
+  .segment.eve .segment-label{ color: var(--brick); }
+
+  .banner{
+    margin-top: 14px;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    display:flex; gap:10px; align-items:flex-start;
+  }
+  .banner.flight{ background: var(--brick-soft); color: #7A3220; }
+  .banner.gold{ background: var(--gold-soft); color: #7A5A16; }
+
+  /* ---------- Flight plan toggle ---------- */
+  .plan-toggle{
+    display:flex; gap:8px;
+    padding: 0 22px 4px;
+    flex-wrap: wrap;
+  }
+  .plan-pill{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .plan-pill.active{
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+    font-weight: 700;
+  }
+  .plan-note{
+    padding: 10px 22px 0;
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  /* ---------- Stay info ---------- */
+  .stay-info{
+    margin-top: 22px;
+    background: var(--bg-alt);
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 13.8px;
+    color: var(--ink-muted);
+  }
+  .stay-info h3{
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+  .stay-info dl{ margin:0; display:grid; grid-template-columns: 76px 1fr; row-gap: 8px; column-gap: 10px; }
+  .stay-info dt{ color: var(--ink); font-weight:500; }
+  .stay-info dd{ margin:0; }
+
+  footer{
+    text-align:center;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    padding: 30px 16px 40px;
+    opacity: 0.7;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .status-dot{ animation: none; }
+  }
+
+  /* ---------- Mobile readability tuning ---------- */
+  @media (max-width: 480px){
+    body{ font-size: 16px; }
+    header.hero{ padding: 28px 16px 22px; }
+    .hero-sub{ margin-bottom: 18px; }
+    .status-board{ padding: 12px 14px; }
+    .status-text{ font-size: 13px; line-height:1.5; }
+
+    nav.route-wrap{ padding: 10px 8px 8px; }
+    .stop{ width: 68px; min-height: 44px; }
+    .stop-date{ font-size: 12px; }
+
+    .day-card-head{ padding: 18px 18px 14px; }
+    .day-card-head h2{ font-size: 20px; }
+    .segments{ padding: 4px 18px 18px; }
+
+    .segment{ flex-direction: column; gap: 4px; padding: 14px 0; }
+    .segment-label{ flex-direction: row; align-items:center; gap:6px; }
+    .segment-label .icon{ display:inline; margin-bottom:0; font-size: 15px; }
+    .segment-body{ font-size: 16px; }
+
+    .plan-toggle{ padding: 0 18px 4px; }
+    .plan-pill{ padding: 9px 14px; font-size: 12.5px; min-height: 40px; }
+    .plan-note{ padding: 10px 18px 0; }
+
+    .stay-info{ padding: 16px 16px; }
+    .stay-info dl{ grid-template-columns: 64px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">DA LI STUDY · MELBOURNE 2026</div>
+  <h1>墨爾本國際學生交流團</h1>
+  <p class="hero-sub">2026/07/13 — 2026/07/25 ・ 住宿地：Box Hill</p>
+  <div class="status-board">
+    <div class="status-dot"></div>
+    <div class="status-text" id="statusText">載入中…</div>
+  </div>
+</header>
+
+<nav class="route-wrap">
+  <div class="route-scroll" id="routeScroll">
+    <div class="route-line"></div>
+    <!-- stops injected by JS -->
+  </div>
+</nav>
+
+<main>
+  <div class="day-card" id="dayCard"></div>
+
+  <div class="stay-info">
+    <h3>住宿資訊</h3>
+    <dl>
+      <dt>地址</dt><dd>11 Prospect Street, Box Hill, VIC 3128, Australia</dd>
+      <dt>方式</dt><dd>飯店／公寓式住宿，由帶隊老師及學生共同入住管理，並非寄宿家庭（Homestay）</dd>
+      <dt>房型</dt><dd>依實際訂房分配安排，由帶隊老師統一管理入住、房間分配及每日人員確認</dd>
+    </dl>
+  </div>
+</main>
+
+<footer>行程若有異動，以帶隊老師現場公告為準</footer>
+
+<script>
+const FLIGHT_PLANS = {
+  1: {
+    label: "方案一・直飛",
+    day0eve: "23:30 自桃園機場出發，搭乘中華航空 CI57（直飛），夜宿機上",
+    day1: { am: "航程中，飛往墨爾本（直飛）", pm: "10:40 抵達墨爾本機場", place: "抵達墨爾本" }
+  },
+  2: {
+    label: "方案二・布里斯本轉機",
+    day0eve: "23:55 自桃園機場出發，搭乘中華航空 CI53，夜宿機上",
+    day1: { am: "航程中／布里斯本轉機（CI53 抵達 10:35，轉搭 QF625 13:20 起飛）", pm: "搭乘 QF625 前往墨爾本，約 15:50 抵達", place: "布里斯本轉機／抵達墨爾本" }
+  }
+};
+let selectedPlan = 1;
+
+const DAYS = [
+  { date:"2026-07-13", wd:"一", place:"出發日", am:"行前準備", pm:"集合及機場報到", eve:"", flight:true, planToggle:true },
+  { date:"2026-07-14", wd:"二", place:"", am:"", pm:"", eve:"機場接送、入住住宿地點、休息／Box Hill", flight:true, planToggle:true },
+  { date:"2026-07-15", wd:"三", place:"墨爾本市區", am:"Flinders Street Station、墨爾本市區交通探索", pm:"Federation Square、ACMI 澳洲動態影像中心", eve:"學習紀錄及活動整理／Box Hill" },
+  { date:"2026-07-16", wd:"四", place:"墨爾本市區", am:"Queen Victoria Market 維多利亞女王市場", pm:"State Library of Victoria 維多利亞州立圖書館", eve:"學習紀錄及活動整理／Box Hill" },
+  { date:"2026-07-17", wd:"五", place:"大學參訪／動物園", am:"University of Melbourne 墨爾本大學", pm:"Lygon Street 小義大利、Melbourne Zoo 墨爾本動物園", eve:"學習紀錄及活動整理／Box Hill" },
+  { date:"2026-07-18", wd:"六", place:"科學博物館／海港", am:"Scienceworks 科學博物館", pm:"Williamstown 海港地區探索", eve:"學習紀錄及活動整理／Box Hill" },
+  { date:"2026-07-19", wd:"日", place:"自由探索日", am:"墨爾本市區探索", pm:"拍攝素材及學習成果整理", eve:"團體交流及內容檢視／Box Hill" },
+  { date:"2026-07-20", wd:"一", place:"街頭藝術／美術館", am:"Hosier Lane 塗鴉街及城市藝術探索", pm:"NGV 維多利亞國家美術館", eve:"學習紀錄及活動整理／Box Hill" },
+  { date:"2026-07-21", wd:"二", place:"餐旅職涯體驗", am:"Hospitality 餐旅產業及職涯探索", pm:"餐旅實務體驗活動", eve:"學習紀錄及活動整理／Box Hill" },
+  { date:"2026-07-22", wd:"三", place:"大學參訪／博物館", am:"RMIT University 皇家墨爾本理工大學", pm:"Melbourne Museum 墨爾本博物館", eve:"學習紀錄及活動整理／Box Hill" },
+  { date:"2026-07-23", wd:"四", place:"職涯體驗日", am:"木工實務探索", pm:"建築工程及職涯體驗", eve:"成果整理及返程準備／Box Hill" },
+  { date:"2026-07-24", wd:"五", place:"返程日", am:"學習成果整理及發表準備", pm:"成果分享、行李整理及前往機場", eve:"21:50 自墨爾本機場搭機返台，搭乘中華航空 CI58（直飛），夜宿機上", flight:true },
+  { date:"2026-07-25", wd:"六", place:"抵達台灣", am:"約 05:15 抵達桃園國際機場（CI58）", pm:"解散返家", eve:"—", flight:true },
+];
+
+function taipeiToday(){
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' });
+}
+
+const today = taipeiToday();
+let currentIndex = DAYS.findIndex(d => d.date === today);
+let statusMsg = "";
+
+if (currentIndex === -1) {
+  if (today < DAYS[0].date) {
+    const diff = Math.ceil((new Date(DAYS[0].date) - new Date(today)) / 86400000);
+    currentIndex = 0;
+    statusMsg = `距離出發還有 <b>${diff}</b> 天`;
+  } else {
+    currentIndex = DAYS.length - 1;
+    statusMsg = "行程已結束，感謝參加這趟交流之旅";
+  }
+} else {
+  statusMsg = `今天是行程 <b>第 ${currentIndex + 1} 天</b>`;
+}
+
+let selectedIndex = currentIndex;
+
+function mmdd(dateStr){
+  const [,m,d] = dateStr.split("-");
+  return `${parseInt(m)}/${parseInt(d)}`;
+}
+
+function renderRoute(){
+  const wrap = document.getElementById('routeScroll');
+  wrap.querySelectorAll('.stop').forEach(el => el.remove());
+  DAYS.forEach((d, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'stop' + (i === selectedIndex ? ' active' : '') + (d.date === today ? ' today' : '');
+    btn.innerHTML = `<span class="stop-dot"></span><span class="stop-day">DAY ${i+1}</span><span class="stop-date">${mmdd(d.date)}（${d.wd}）</span>`;
+    btn.addEventListener('click', () => { selectedIndex = i; render(); });
+    wrap.appendChild(btn);
+  });
+}
+
+function planFields(d, index){
+  // Returns {place, am, pm, eve} after applying the selected flight plan's overrides, if any.
+  let { place, am, pm, eve } = d;
+  if (index === 0) {
+    eve = FLIGHT_PLANS[selectedPlan].day0eve;
+  }
+  if (index === 1) {
+    const p1 = FLIGHT_PLANS[selectedPlan].day1;
+    place = p1.place; am = p1.am; pm = p1.pm;
+  }
+  return { place, am, pm, eve };
+}
+
+function renderCard(){
+  const d = DAYS[selectedIndex];
+  const f = planFields(d, selectedIndex);
+  const card = document.getElementById('dayCard');
+  const toggleHtml = d.planToggle ? `
+    <div class="plan-toggle">
+      ${[1,2].map(p => `<button class="plan-pill${selectedPlan === p ? ' active' : ''}" data-plan="${p}">${FLIGHT_PLANS[p].label}</button>`).join('')}
+    </div>
+    <div class="plan-note">機票尚未確定，以下先依你選擇的方案顯示，兩案回程航班相同（CI58）</div>
+  ` : '';
+  card.innerHTML = `
+    <div class="day-card-head">
+      <span class="weekday-tag">DAY ${selectedIndex + 1} / ${DAYS.length}</span>
+      <h2>${mmdd(d.date)}（${d.wd}）</h2>
+      <div class="place">${f.place}</div>
+    </div>
+    ${toggleHtml}
+    <div class="segments">
+      <div class="segment am">
+        <div class="segment-label"><span class="icon">☀️</span>上午</div>
+        <div class="segment-body">${f.am}</div>
+      </div>
+      <div class="segment pm">
+        <div class="segment-label"><span class="icon">🌇</span>下午</div>
+        <div class="segment-body">${f.pm}</div>
+      </div>
+      <div class="segment eve">
+        <div class="segment-label"><span class="icon">🌙</span>晚上</div>
+        <div class="segment-body">${f.eve}</div>
+      </div>
+    </div>
+    ${d.flight ? `<div style="padding:0 22px 20px;"><div class="banner flight">✈️ 今天有搭機行程，請提前確認證件與行李</div></div>` : ``}
+  `;
+  card.querySelectorAll('.plan-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedPlan = parseInt(btn.dataset.plan);
+      renderCard();
+    });
+  });
+}
+
+function render(){
+  document.getElementById('statusText').innerHTML = statusMsg;
+  renderRoute();
+  renderCard();
+  const activeStop = document.querySelector('.stop.active');
+  if (activeStop) activeStop.scrollIntoView({ inline: 'center', block: 'nearest' });
+}
+
+render();
+</script>
+
+</body>
+</html>
