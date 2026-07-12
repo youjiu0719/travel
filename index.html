@@ -181,13 +181,14 @@
   .steps .eyebrow .en{color:var(--gold);}
   ol.step-list{list-style:none; margin:16px 0 0; padding:0; counter-reset:step;}
   ol.step-list li{
-    counter-increment:step;
-    display:grid; grid-template-columns:30px 1fr; gap:10px;
-    margin-bottom:14px;
-    font-size:14px;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:16px;
   }
-  ol.step-list li::before{
-    content:counter(step);
+  ol.step-list li:last-child{margin-bottom:0;}
+  ol.step-list .marker{
+    flex:0 0 26px;
     background:var(--gold);
     color:var(--navy-deep);
     font-weight:800;
@@ -195,8 +196,11 @@
     border-radius:50%;
     display:flex; align-items:center; justify-content:center;
     font-size:13px;
+    margin-top:1px;
   }
-  ol.step-list .en{display:block; color:#B7BAC8; font-size:12.5px; margin-top:2px;}
+  ol.step-list .step-text{flex:1;}
+  ol.step-list .step-text p{margin:0; font-size:14px;}
+  ol.step-list .step-text .en{display:block; color:#B7BAC8; font-size:12.5px; margin-top:3px;}
 
   .id-block{background:#fff;}
   .id-note{font-size:13px; color:var(--ink-soft); margin-top:10px;}
@@ -288,23 +292,6 @@
     <div class="eyebrow"><span class="en">Emergency Contacts</span>緊急聯絡</div>
 
     <div class="contact-card priority">
-      <div class="contact-role">澳洲當地辦公室 · Melbourne Office <span class="badge">本地號碼</span></div>
-      <div class="contact-name">大理國際遊留學 墨爾本辦公室<br><span style="font-weight:400; font-size:12.5px; color:var(--ink-soft);">G/273 Camberwell Road, VIC 3124</span></div>
-      <div class="btn-row">
-        <a class="call-btn" href="tel:+61412065350">📞 撥打 +61 412 065 350</a>
-      </div>
-    </div>
-
-    <div class="contact-card">
-      <div class="contact-role">Carol <span class="badge">WhatsApp</span></div>
-      <div class="contact-name">+886 938 583 158</div>
-      <div class="btn-row">
-        <a class="call-btn" href="tel:+886938583158">📞 國際電話撥打</a>
-        <a class="wa-btn" href="https://wa.me/886938583158" target="_blank" rel="noopener">💬 使用 WhatsApp 聯繫</a>
-      </div>
-    </div>
-
-    <div class="contact-card">
       <div class="contact-role">Wendy · 主辦聯絡人 Program Contact</div>
       <div class="contact-name">+886 966 795 658</div>
       <div class="btn-row">
@@ -312,6 +299,14 @@
       </div>
       <div class="contact-note">台灣號碼，無澳洲當地電話，建議優先使用 WhatsApp 或國際電話聯繫。多數學生手機中已存有此聯絡方式，可請學生協助撥打。<br>
       <span style="color:var(--ink-soft);">Taiwan-based number, no Australian line — please use WhatsApp or international dialing. Most students already have this contact saved and can help place the call themselves.</span></div>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-role">澳洲當地辦公室 · Melbourne Office <span class="badge">本地號碼</span></div>
+      <div class="contact-name">大理國際遊留學 墨爾本辦公室<br><span style="font-weight:400; font-size:12.5px; color:var(--ink-soft);">G/273 Camberwell Road, VIC 3124</span></div>
+      <div class="btn-row">
+        <a class="call-btn" href="tel:+61412065350">📞 撥打 +61 412 065 350</a>
+      </div>
     </div>
 
     <div class="email-line">
@@ -322,17 +317,29 @@
   <section class="steps">
     <div class="eyebrow"><span class="en">Please Help</span>請協助我們</div>
     <ol class="step-list">
-      <li>請不要讓學生獨自離開。
-        <span class="en">Please do not allow the student to leave alone.</span>
+      <li><span class="marker">1</span>
+        <div class="step-text">
+          <p>請不要讓學生獨自離開。</p>
+          <p class="en">Please do not allow the student to leave alone.</p>
+        </div>
       </li>
-      <li>請協助學生留在原地，或前往服務台、商店等有人員在場的安全場所。
-        <span class="en">Keep the student at a customer service desk, shop, or another staffed, safe location.</span>
+      <li><span class="marker">2</span>
+        <div class="step-text">
+          <p>請協助學生留在原地，或前往服務台、商店等有人員在場的安全場所。</p>
+          <p class="en">Keep the student at a customer service desk, shop, or another staffed, safe location.</p>
+        </div>
       </li>
-      <li>請優先撥打上方「澳洲當地辦公室」或 Carol 的號碼（可使用 WhatsApp）。
-        <span class="en">Please call the Melbourne office or Carol first — WhatsApp is available.</span>
+      <li><span class="marker">3</span>
+        <div class="step-text">
+          <p>請協助學生使用自己的手機聯繫 Wendy，多數學生手機中已存有此聯絡方式。</p>
+          <p class="en">Please help the student use their own phone to contact Wendy — most students already have her saved as a contact.</p>
+        </div>
       </li>
-      <li>若無法聯繫，可請學生使用自己的手機聯繫 Wendy，多數學生手機中已存有此聯絡方式。
-        <span class="en">If unreachable, help the student use their own phone to contact Wendy — most students already have her saved as a contact.</span>
+      <li><span class="marker">4</span>
+        <div class="step-text">
+          <p>若無法聯繫 Wendy，請撥打上方「澳洲當地辦公室」號碼。</p>
+          <p class="en">If Wendy is unreachable, please call the Melbourne office number above.</p>
+        </div>
       </li>
     </ol>
   </section>
